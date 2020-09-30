@@ -1,0 +1,377 @@
+[
+    {
+        "id": "53cadc15.b63d14",
+        "type": "http in",
+        "z": "ba277bc1.9f9a48",
+        "name": "",
+        "url": "/server",
+        "method": "post",
+        "upload": true,
+        "swaggerDoc": "",
+        "x": 390,
+        "y": 240,
+        "wires": [
+            [
+                "22b27ec8.e86c92",
+                "9d97bf8b.cc84a",
+                "f432e63b.ca3728"
+            ]
+        ]
+    },
+    {
+        "id": "f432e63b.ca3728",
+        "type": "function",
+        "z": "ba277bc1.9f9a48",
+        "name": "create s3filename",
+        "func": "body = msg.req.files[0].buffer;\nmsg.time = msg.payload.time;\nmsg.caller_ip_address = msg.payload.caller_ip_address;\nmsg.img_id = msg.payload.img_id;\nmsg.machineID = msg.payload.machineID;\n\nntime = msg.payload.time;\n\nvar fname = 'HFT'+ ntime +'.JPEG';\n//flow.set(\"s3filename\", fname);\nmsg.Key = fname;\n\nmsg.Body = body;\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 910,
+        "y": 240,
+        "wires": [
+            [
+                "b9eaf83c.6b38a8"
+            ]
+        ]
+    },
+    {
+        "id": "b9eaf83c.6b38a8",
+        "type": "AWS S3",
+        "z": "ba277bc1.9f9a48",
+        "aws": "b3a5bf25.3cb76",
+        "operation": "PutObject",
+        "Bucket": "srhkrecognition",
+        "Key": "",
+        "UploadId": "",
+        "CopySource": "",
+        "Id": "",
+        "Delete": "",
+        "AccelerateConfiguration": "",
+        "AnalyticsConfiguration": "",
+        "CORSConfiguration": "",
+        "ServerSideEncryptionConfiguration": "",
+        "InventoryConfiguration": "",
+        "BucketLoggingStatus": "",
+        "MetricsConfiguration": "",
+        "NotificationConfiguration": "",
+        "Policy": "",
+        "ReplicationConfiguration": "",
+        "RequestPaymentConfiguration": "",
+        "Tagging": "",
+        "VersioningConfiguration": "",
+        "WebsiteConfiguration": "",
+        "Expression": "",
+        "ExpressionType": "",
+        "InputSerialization": "",
+        "OutputSerialization": "",
+        "PartNumber": "",
+        "name": "save to S3",
+        "x": 1110,
+        "y": 240,
+        "wires": [
+            [
+                "7c79f263.c71b4c"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "7c79f263.c71b4c",
+        "type": "function",
+        "z": "ba277bc1.9f9a48",
+        "name": "empty Body",
+        "func": "msg.Body = null;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1290,
+        "y": 240,
+        "wires": [
+            [
+                "245b6fc4.6bb32"
+            ]
+        ]
+    },
+    {
+        "id": "245b6fc4.6bb32",
+        "type": "link out",
+        "z": "ba277bc1.9f9a48",
+        "name": "",
+        "links": [
+            "bc4bb63c.79a4f8"
+        ],
+        "x": 1415,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "9d97bf8b.cc84a",
+        "type": "debug",
+        "z": "ba277bc1.9f9a48",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 630,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "82745077.ef45a",
+        "type": "debug",
+        "z": "ba277bc1.9f9a48",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 830,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "c654b3b3.a8528",
+        "type": "debug",
+        "z": "ba277bc1.9f9a48",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1350,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "80e3618a.065d7",
+        "type": "comment",
+        "z": "ba277bc1.9f9a48",
+        "name": "extract all faces waiting at door",
+        "info": "",
+        "x": 1230,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "22b27ec8.e86c92",
+        "type": "function",
+        "z": "ba277bc1.9f9a48",
+        "name": "set configuration",
+        "func": "flow.set(\"collectionID\", \"HongFukTong_hk\");\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 660,
+        "y": 280,
+        "wires": [
+            [
+                "82745077.ef45a"
+            ]
+        ]
+    },
+    {
+        "id": "bc4bb63c.79a4f8",
+        "type": "link in",
+        "z": "ba277bc1.9f9a48",
+        "name": "cld_rec_prepare indexing and labeling",
+        "links": [
+            "245b6fc4.6bb32"
+        ],
+        "x": 335,
+        "y": 500,
+        "wires": [
+            [
+                "397f6f4f.d4526"
+            ]
+        ]
+    },
+    {
+        "id": "397f6f4f.d4526",
+        "type": "template",
+        "z": "ba277bc1.9f9a48",
+        "name": "make index-faces",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "/home/ubuntu/.local/bin/aws rekognition index-faces --image '{\"S3Object\":{\"Bucket\":\"srhkrecognition\",\"Name\":\"{{{Key}}}\"}}' --collection-id \"{{flow.collectionID}}\" --max-faces 1 --quality-filter \"AUTO\" --detection-attributes \"ALL\" \n\n",
+        "output": "str",
+        "x": 471.92855072021484,
+        "y": 487.46033096313477,
+        "wires": [
+            [
+                "3db85f71.dbd0c",
+                "5696c209.a027fc"
+            ]
+        ]
+    },
+    {
+        "id": "3db85f71.dbd0c",
+        "type": "exec",
+        "z": "ba277bc1.9f9a48",
+        "command": "",
+        "addpay": true,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "CLI index-faces",
+        "x": 681.9285507202148,
+        "y": 487.46033096313477,
+        "wires": [
+            [
+                "b9a3017b.0ec35",
+                "8967955.567bc68"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b9a3017b.0ec35",
+        "type": "json",
+        "z": "ba277bc1.9f9a48",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 870,
+        "y": 480,
+        "wires": [
+            [
+                "5e4701b5.59f43",
+                "5331481b.108758"
+            ]
+        ]
+    },
+    {
+        "id": "5e4701b5.59f43",
+        "type": "switch",
+        "z": "ba277bc1.9f9a48",
+        "name": "find face?",
+        "property": "payload.FaceRecords[0].FaceDetail.Confidence",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "90",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1021.9285507202148,
+        "y": 487.46033096313477,
+        "wires": [
+            [
+                "5a7bcd4c.240b64"
+            ],
+            [
+                "4810f760.a0f7e8"
+            ]
+        ]
+    },
+    {
+        "id": "4810f760.a0f7e8",
+        "type": "http response",
+        "z": "ba277bc1.9f9a48",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1430,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "5a7bcd4c.240b64",
+        "type": "function",
+        "z": "ba277bc1.9f9a48",
+        "name": "extract data",
+        "func": "var max = msg.payload.FaceRecords[0].FaceDetail.AgeRange.High;\nvar min = msg.payload.FaceRecords[0].FaceDetail.AgeRange.Low;\nvar ascore = msg.payload.FaceRecords[0].FaceDetail.Confidence;\nvar height = msg.payload.FaceRecords[0].Face.BoundingBox.Height;\nvar width = msg.payload.FaceRecords[0].Face.BoundingBox.Width;\nvar left = msg.payload.FaceRecords[0].Face.BoundingBox.Left;\nvar top = msg.payload.FaceRecords[0].Face.BoundingBox.Top;\nvar gen = msg.payload.FaceRecords[0].FaceDetail.Gender.Value;\nvar gender = gen.toUpperCase();\nvar gscore = msg.payload.FaceRecords[0].FaceDetail.Gender.Confidence;\nvar img_id = msg.img_id;\nvar time = msg.time;\nvar caller_ip_address = msg.caller_ip_address;\nvar machineID = msg.machineID;\nvar faceid = msg.payload.FaceRecords[0].Face.FaceId;\n\nmsg.payload = {\n    \"age\":{\n        \"min\": min,\n        \"max\": max,\n        \"score\": ascore\n    },\n    \"face_location\":{\n        \"height\": height,\n        \"width\": width,\n        \"left\": left,\n        \"top\": top\n    },\n    \"gender\":{\n        \"gender\": gender,\n        \"score\": gscore\n    },\n    \"img_id\": img_id,\n    \"time\": time,\n    \"caller_ip_address\": caller_ip_address,\n    \"FaceID\": faceid,\n    \"machineID\": machineID\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1190,
+        "y": 460,
+        "wires": [
+            [
+                "c654b3b3.a8528",
+                "4810f760.a0f7e8"
+            ]
+        ]
+    },
+    {
+        "id": "8967955.567bc68",
+        "type": "debug",
+        "z": "ba277bc1.9f9a48",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 890,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "5696c209.a027fc",
+        "type": "debug",
+        "z": "ba277bc1.9f9a48",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 670,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "5331481b.108758",
+        "type": "debug",
+        "z": "ba277bc1.9f9a48",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1010,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "c5641781.c1da88",
+        "type": "function",
+        "z": "ba277bc1.9f9a48",
+        "name": "extract data",
+        "func": "var max = msg.payload.FaceRecords[0].FaceDetail.AgeRange.High;\nvar min = msg.payload.FaceRecords[0].FaceDetail.AgeRange.Low;\nvar ascore = msg.payload.FaceRecords[0].FaceDetail.Confidence;\nvar height = msg.payload.FaceRecords[0].Face.BoundingBox.Height;\nvar width = msg.payload.FaceRecords[0].Face.BoundingBox.Width;\nvar left = msg.payload.FaceRecords[0].Face.BoundingBox.Left;\nvar top = msg.payload.FaceRecords[0].Face.BoundingBox.Top;\nvar gen = msg.payload.FaceRecords[0].FaceDetail.Gender.Value;\nvar gender = gen.toUpperCase();\nvar gscore = msg.payload.FaceRecords[0].FaceDetail.Gender.Confidence;\nvar img_id = msg.img_id;\nvar time = msg.time;\nvar caller_ip_address = msg.caller_ip_address;\nvar machineID = msg.machineID;\n\nmsg.payload = {\n    \"age\":{\n        \"min\": min,\n        \"max\": max,\n        \"score\": ascore\n    },\n    \"face_location\":{\n        \"height\": height,\n        \"width\": width,\n        \"left\": left,\n        \"top\": top\n    },\n    \"gender\":{\n        \"gender\": gender,\n        \"score\": gscore\n    },\n    \"img_id\": img_id,\n    \"time\": time,\n    \"caller_ip_address\": caller_ip_address,\n    \"machineID\": machineID\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1250,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b3a5bf25.3cb76",
+        "type": "amazon config",
+        "z": "",
+        "name": "AWS",
+        "region": "ap-northeast-1",
+        "proxyRequired": false,
+        "proxy": ""
+    }
+]
